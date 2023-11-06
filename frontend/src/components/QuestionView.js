@@ -17,7 +17,13 @@ class QuestionView extends Component {
   }
 
   componentDidMount() {
-    this.getQuestions();
+    const params = new URLSearchParams(window.location.search);
+    const page = params.get('page');
+    if (!page) {
+      this.selectPage(this.state.page);
+    } else {
+      this.selectPage(page);
+    }
   }
 
   getQuestions = () => {
@@ -41,6 +47,12 @@ class QuestionView extends Component {
   };
 
   selectPage(num) {
+    const params = new URLSearchParams(window.location.search);
+    const currentPage = params.get('page');
+    if (num !== currentPage) {
+      params.set('page', num.toString());
+      window.history.replaceState(null, null, `?${params.toString()}`);
+    }
     this.setState({ page: num }, () => this.getQuestions());
   }
 
@@ -51,7 +63,7 @@ class QuestionView extends Component {
       pageNumbers.push(
         <span
           key={i}
-          className={`page-num ${i === this.state.page ? 'active' : ''}`}
+          className={`page-num ${i === Number(this.state.page) ? 'active' : ''}`}
           onClick={() => {
             this.selectPage(i);
           }}
@@ -65,7 +77,7 @@ class QuestionView extends Component {
 
   getByCategory = (id) => {
     $.ajax({
-      url: `/categories/${id}/questions`, //TODO: update request URL
+      url: `/categories/${id}/questions`,
       type: 'GET',
       success: (result) => {
         this.setState({
