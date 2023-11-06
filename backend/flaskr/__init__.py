@@ -99,6 +99,7 @@ def create_app(test_config=None):
   def search_questions():
     try:
       data = request.get_json()
+
       # lowercase the seach term and use ilike to allow for a case insensitive query
       search_term = data['searchTerm'].lower()
       questions = Question.query.filter(
