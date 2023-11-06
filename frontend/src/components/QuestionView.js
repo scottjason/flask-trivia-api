@@ -55,6 +55,13 @@ class QuestionView extends Component {
     }
     this.setState({ page: num }, () => this.getQuestions());
   }
+  onPaginateSearch() {
+    const page = 1;
+    const params = new URLSearchParams(window.location.search);
+    params.set('page', page.toString());
+    window.history.replaceState(null, null, `?${params.toString()}`);
+    this.setState({ page: 1 });
+  }
 
   createPagination() {
     let pageNumbers = [];
@@ -111,6 +118,7 @@ class QuestionView extends Component {
           totalQuestions: result.total_questions,
           currentCategory: result.current_category,
         });
+        this.onPaginateSearch()
         return;
       },
       error: (error) => {

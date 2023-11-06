@@ -97,6 +97,9 @@ def create_app(test_config=None):
 
   @app.route('/questions/search', methods=['POST'])
   def search_questions():
+    page = request.args.get('page', 1, type=int)
+    start = (page - 1) * QUESTIONS_PER_PAGE
+    end = start + QUESTIONS_PER_PAGE
     try:
       data = request.get_json()
 
@@ -110,7 +113,7 @@ def create_app(test_config=None):
 
       formatted_questions = [question.format() for question in questions]
       data = dict()
-      data['questions'] = formatted_questions
+      data['questions'] = formatted_questions[start:end]
       data['total_questions'] = len(formatted_questions)
       # https://knowledge.udacity.com/questions/809673 set to empty value per Udacity mentor
       # as there can be more than one category returned for the search term
@@ -122,6 +125,9 @@ def create_app(test_config=None):
 
   @app.route('/categories/<int:category_id>/questions', methods=['GET'])
   def get_questions_by_category(category_id):
+    page = request.args.get('page', 1, type=int)
+    start = (page - 1) * QUESTIONS_PER_PAGE
+    end = start + QUESTIONS_PER_PAGE
     try:
       category = Category.query.filter(
           Category.id == category_id).one_or_none()
@@ -137,7 +143,7 @@ def create_app(test_config=None):
 
       formatted_questions = [question.format() for question in questions]
       data = dict()
-      data['questions'] = formatted_questions
+      data['questions'] = formatted_questions[start:end]
       data['total_questions'] = len(formatted_questions)
       data['current_category'] = current_category
       data['success'] = True

@@ -30,6 +30,8 @@ Start a postgreSQL server and create two databases, one called `trivia` and anot
 ## Running the app
 To start the app, run `npm start` in one terminal window in the frontend directory, then in the another terminal window, while under the backend directory, run `flask run`.
 
+Then visit http://localhost:3000.
+
 ## API
 
 ### `GET /categories`
@@ -109,13 +111,13 @@ categories: {
 ### `POST /questions`
 - Creates a new trivia question which includes the answer, category and difficulty level.
 - Request Arguments: post body contains `question` and `answer`, both of type string as well as `category` and `difficulty`, both of type int.
-Returns `{ success: true }`
+- Returns `{ success: true }`
 
 
 ### `DELETE /questions/<question_id>`
 - Deletes a question by id.
 - Request Arguments: `question_id` in the path, data type int.
-Returns `{ success: true }`
+- Returns `{ success: true }`
 
 ### `POST questions/search`
 - Searches for trivia questions that partially match the search term.
