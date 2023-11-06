@@ -25,29 +25,6 @@ class TriviaTestCase(unittest.TestCase):
       self.db.init_app(self.app)
       # create all tables
       self.db.create_all()
-      categories = Category.query.all()
-      # populate test db with categories if empty
-      if len(categories) == 0:
-        categories = {'1': 'Science', '2': 'Art', '3': 'Geography',
-                      '4': 'History', '5': 'Entertainment', '6': 'Sports'}
-        for category in categories:
-          category = Category(type=categories[category])
-          self.db.session.add(category)
-          self.db.session.commit()
-          self.db.session.close()
-      # populate test db with a question if empty
-      questions = Question.query.all()
-      if len(questions) == 0:
-        question = {
-            'question': "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?",
-            'answer': 'Maya Angelou',
-            'category': 4, 'difficulty': 2
-        }
-        new_question = Question(question=question['question'], answer=question['answer'],
-                                category=question['category'], difficulty=question['difficulty'])
-        self.db.session.add(new_question)
-        self.db.session.commit()
-        self.db.session.close()
 
   def tearDown(self):
     """Executed after reach test"""

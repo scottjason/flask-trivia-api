@@ -14,7 +14,12 @@ Then install the dependencies:
 pip install -r requirements.txt
 ```
 
-Start a postgreSQL server and create two databases, one called `trivia` and another called `trivia_test`.
+Start a postgreSQL server and create a database called `trivia`.
+
+```
+dropdb trivia
+createdb trivia
+```
 
 Then run:
 
@@ -32,7 +37,18 @@ To start the app, run `npm start` in one terminal window in the frontend directo
 Then visit http://localhost:3000.
 
 ## Running the tests
-To run the tests, while in the backend directory run:
+With postgreSQL running, create a database called `trivia_test`.
+
+```
+dropdb trivia_test
+createdb trivia_test
+```
+
+Then run:
+
+`psql trivia_test < trivia.psql`
+
+To run the tests, while in the backend directory, run:
 
 ```
 python test_flaskr.py
