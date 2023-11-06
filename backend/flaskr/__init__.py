@@ -9,6 +9,17 @@ from models import setup_db, Question, Category
 QUESTIONS_PER_PAGE = 10
 
 
+def get_start_and_end(request):
+  # a reusable pagination function to return start and end values
+  data = dict()
+  page = request.args.get('page', 1, type=int)
+  start = (page - 1) * QUESTIONS_PER_PAGE
+  end = start + QUESTIONS_PER_PAGE
+  data['start'] = start
+  data['end'] = end
+  return data
+
+
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
@@ -41,9 +52,9 @@ def create_app(test_config=None):
 
   @app.route('/questions', methods=['GET'])
   def get_questions():
-    page = request.args.get('page', 1, type=int)
-    start = (page - 1) * QUESTIONS_PER_PAGE
-    end = start + QUESTIONS_PER_PAGE
+    pagination = get_start_and_end(request)
+    start = pagination['start']
+    end = pagination['end']
     questions = Question.query.order_by(Question.id).all()
     if len(questions) == 0:
       abort(404)
@@ -97,9 +108,9 @@ def create_app(test_config=None):
 
   @app.route('/questions/search', methods=['POST'])
   def search_questions():
-    page = request.args.get('page', 1, type=int)
-    start = (page - 1) * QUESTIONS_PER_PAGE
-    end = start + QUESTIONS_PER_PAGE
+    pagination = get_start_and_end(request)
+    start = pagination['start']
+    end = pagination['end']
     try:
       data = request.get_json()
 
@@ -125,9 +136,9 @@ def create_app(test_config=None):
 
   @app.route('/categories/<int:category_id>/questions', methods=['GET'])
   def get_questions_by_category(category_id):
-    page = request.args.get('page', 1, type=int)
-    start = (page - 1) * QUESTIONS_PER_PAGE
-    end = start + QUESTIONS_PER_PAGE
+    pagination = get_start_and_end(request)
+    start = pagination['start']
+    end = pagination['end']
     try:
       category = Category.query.filter(
           Category.id == category_id).one_or_none()
