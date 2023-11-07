@@ -1,10 +1,16 @@
 import os
 import unittest
 import json
-from flask_sqlalchemy import SQLAlchemy
 
+from flask_sqlalchemy import SQLAlchemy
 from flaskr import create_app
 from models import setup_db, Question, Category
+
+DB_HOST = os.environ.get('DB_HOST')
+DB_PORT = os.environ.get('DB_PORT')
+DB_USER = os.environ.get('DB_USER')
+DB_PASSWORD = os.environ.get('DB_PASSWORD')
+DB_TEST_NAME = os.environ.get('DB_TEST_NAME')
 
 
 class TriviaTestCase(unittest.TestCase):
@@ -14,9 +20,8 @@ class TriviaTestCase(unittest.TestCase):
     """Define test variables and initialize app."""
     self.app = create_app()
     self.client = self.app.test_client
-    self.database_name = "trivia_test"
-    self.database_path = "postgres://{}/{}".format(
-        'localhost:5432', self.database_name)
+    self.database_path = 'postgresql://{}:{}@{}:{}/{}'.format(
+        DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_TEST_NAME)
     setup_db(self.app, self.database_path)
 
     # binds the app to the current context
