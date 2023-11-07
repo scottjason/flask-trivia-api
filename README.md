@@ -31,6 +31,20 @@ Next in a second terminal window, navigate to the frontend directory and run:
 npm install
 ```
 
+## Environment Variables
+In the backend directory, create a `.env` file and copy and paste the below into the file. Then replace the value of DB_USER and DB_PASSWORD with your credentials.
+
+```bash
+DEBUG=True
+FLASK_ENV=development
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_USER=<your db username>
+DB_PASSWORD=<your db passowrd>
+DB_NAME=trivia
+DB_TEST_NAME=trivia_test
+```
+
 ## Running the app
 To start the app, run `npm start` in one terminal window in the frontend directory, then in the another terminal window, while under the backend directory, run `flask run`.
 
